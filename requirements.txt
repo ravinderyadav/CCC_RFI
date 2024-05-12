@@ -1,9 +1,7 @@
 streamlit
 pandas
 numpy
-warnings
 base64
-PIL
 openpyxl
 gc
 time

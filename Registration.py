@@ -8,6 +8,7 @@ import os
 from datetime import datetime
 import base64
 from openpyxl import load_workbook
+from urllib.request import urlopen
 from openpyxl.styles import PatternFill
 import warnings
 import io
@@ -15,26 +16,15 @@ import time
 warnings.filterwarnings('ignore')
 
 def app():
-    # # List of image paths (replace with your own image paths)
-    # image_paths = [
-    #     "https://raw.githubusercontent.com/dpsharma15/CCC_RFI/main/img-4.png"
-    # ]
-
-    # # Create a placeholder for the image
-    # image_placeholder = st.empty()
-
-    # # Display each image in the list for 5 seconds
-    # for image_path in image_paths:
-    #     # Load the image
-    #     image = Image.open(image_path)
-        
-    #     # Display the image in the placeholder
-    #     image_placeholder.image(image, use_column_width=True)
-        
-    #     # Wait for 5 seconds before displaying the next image
-    #     time.sleep(0)
-
-
+    # GitHub raw URL of the image
+    github_raw_url = "https://raw.githubusercontent.com/dpsharma15/CCC_RFI/main/img-4.png"
+    
+    # Fetch the image from the URL
+    response = urlopen(github_raw_url)
+    image = Image.open(response)
+    
+    # Display the image
+    st.image(image, use_column_width=True)
 
     def extract_date_from_filename(filename):
         # Extract the date portion from the file name

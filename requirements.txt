@@ -2,7 +2,6 @@ streamlit
 pandas
 numpy
 openpyxl
-gc
 time
 streamlit_option_menu
 os

@@ -12,24 +12,24 @@ import time
 def app():
 
 
-    # List of image paths (replace with your own image paths)
-    image_paths = [
-        "https://raw.githubusercontent.com/dpsharma15/CCC_RFI/main/img-4.png"
-    ]
+    # # List of image paths (replace with your own image paths)
+    # image_paths = [
+    #     "https://raw.githubusercontent.com/dpsharma15/CCC_RFI/main/img-4.png"
+    # ]
 
-    # Create a placeholder for the image
-    image_placeholder = st.empty()
+    # # Create a placeholder for the image
+    # image_placeholder = st.empty()
 
-    # Display each image in the list for 5 seconds
-    for image_path in image_paths:
-        # Load the image
-        image = Image.open(image_path)
+    # # Display each image in the list for 5 seconds
+    # for image_path in image_paths:
+    #     # Load the image
+    #     image = Image.open(image_path)
         
-        # Display the image in the placeholder
-        image_placeholder.image(image, use_column_width=True)
+    #     # Display the image in the placeholder
+    #     image_placeholder.image(image, use_column_width=True)
         
-        # Wait for 5 seconds before displaying the next image
-        time.sleep(0)
+    #     # Wait for 5 seconds before displaying the next image
+    #     time.sleep(0)
 
     st.markdown("<h1 style='text-align: center; color: blue;'>RFI Inspection Result</h1>", unsafe_allow_html=True)
     st.header('Upload your dataset')

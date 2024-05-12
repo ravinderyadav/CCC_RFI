@@ -7,6 +7,7 @@ import base64
 from PIL import Image
 from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
+from urllib.request import urlopen
 import gc
 import time
 def app():
@@ -30,6 +31,16 @@ def app():
         
     #     # Wait for 5 seconds before displaying the next image
     #     time.sleep(0)
+
+    # GitHub raw URL of the image
+    github_raw_url = "https://raw.githubusercontent.com/dpsharma15/CCC_RFI/main/img-4.png"
+    
+    # Fetch the image from the URL
+    response = urlopen(github_raw_url)
+    image = Image.open(response)
+    
+    # Display the image
+    st.image(image, use_column_width=True)
 
     st.markdown("<h1 style='text-align: center; color: blue;'>RFI Inspection Result</h1>", unsafe_allow_html=True)
     st.header('Upload your dataset')

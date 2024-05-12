@@ -17,7 +17,7 @@ warnings.filterwarnings('ignore')
 def app():
     # List of image paths (replace with your own image paths)
     image_paths = [
-        r"D:\Streamlit\img-4.png"
+        "https://github.com/dpsharma15/CCC_RFI/raw/main/img-4.png"
     ]
 
     # Create a placeholder for the image

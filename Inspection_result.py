@@ -310,7 +310,11 @@ def app():
 
                     # Display the result DataFrame as a table
                     st.table(result_df)
-
+                    result = processed_df['Priority (Name)'].str.contains(".*Approved.*") & ~processed_df['Priority (Name)'].eq("Approved")
+                    # Display the 'Comm ID' of the selected rows if any are selected
+                    if result.any():
+                        st.markdown("Comm ID of rows for which **Approved** Comming As Substring:")
+                        st.write(processed_df.loc[result, 'Comm ID'])
                     missing_count = processed_df[processed_df['Priority (Name)'] != 'Cancelled']['Field012 (Custom)'].isnull().sum()
                     st.write("Count of missing values in 'Field012 (Custom)' where 'Priority (Name)' is not 'Cancelled':", missing_count)
                     if show_download:

@@ -97,7 +97,8 @@ def app():
         df_ccc.loc[:, 'Discipline'] = df_ccc['Discipline'].map(discipline_mapping)
         #st.write("Task-3")
         # Task -3a: Update 'Inspection Result' column  "Approved"-----> "Accepted"
-        df_ccc.loc[df_ccc['Inspection Result'] == "Approved", 'Inspection Result'] = "Accepted"
+        #df_ccc.loc[df_ccc['Inspection Result'] == "Approved", 'Inspection Result'] = "Accepted"
+        df_ccc.loc[df_ccc['Inspection Result'].str.contains("Approved"), 'Inspection Result'] = "Accepted"
         
         # Task -3b: Fill value in 'df[workflow - Accepted BY]' column  based condition
         condition = (df_ccc['Inspection Result'] == 'Cancelled') & (df_ccc['Workflow - Accepted By'].isnull())

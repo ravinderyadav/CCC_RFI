@@ -7,40 +7,29 @@ import base64
 from PIL import Image
 from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
-from urllib.request import urlopen
-import gc
+import gc 
 import time
 def app():
 
 
-    # # List of image paths (replace with your own image paths)
-    # image_paths = [
-    #     "https://raw.githubusercontent.com/dpsharma15/CCC_RFI/main/img-4.png"
-    # ]
+    # List of image paths (replace with your own image paths)
+    image_paths = [
+        r"D:\Streamlit\img-4.png"
+    ]
 
-    # # Create a placeholder for the image
-    # image_placeholder = st.empty()
+    # Create a placeholder for the image
+    image_placeholder = st.empty()
 
-    # # Display each image in the list for 5 seconds
-    # for image_path in image_paths:
-    #     # Load the image
-    #     image = Image.open(image_path)
+    # Display each image in the list for 5 seconds
+    for image_path in image_paths:
+        # Load the image
+        image = Image.open(image_path)
         
-    #     # Display the image in the placeholder
-    #     image_placeholder.image(image, use_column_width=True)
+        # Display the image in the placeholder
+        image_placeholder.image(image, use_column_width=True)
         
-    #     # Wait for 5 seconds before displaying the next image
-    #     time.sleep(0)
-
-    # GitHub raw URL of the image
-    github_raw_url = "https://raw.githubusercontent.com/dpsharma15/CCC_RFI/main/img-4.png"
-    
-    # Fetch the image from the URL
-    response = urlopen(github_raw_url)
-    image = Image.open(response)
-    
-    # Display the image
-    st.image(image, use_column_width=True)
+        # Wait for 5 seconds before displaying the next image
+        time.sleep(0)
 
     st.markdown("<h1 style='text-align: center; color: blue;'>RFI Inspection Result</h1>", unsafe_allow_html=True)
     st.header('Upload your dataset')
@@ -73,7 +62,8 @@ def app():
         st.write(f"Number of rows with Inspection Result/Priority (Name) as 'Rejected': {rejected_count}")
         other_result_count = df_ccc[~df_ccc['Inspection Result'].isin(['Approved', 'Rejected', 'Cancelled'])].shape[0]
         st.write(f"Number of rows with Inspection Result/Priority (Name) other than 'Accepted', 'Rejected', or 'Cancelled': {other_result_count}")
-
+        if (other_result_count !=0):
+            st.write(df_ccc[~df_ccc['Inspection Result'].isin(['Approved', 'Rejected', 'Cancelled'])]['Comm ID'].drop_duplicates())
         #st.write("Task-1")
         # Task - 1 : Rename columns
         df_ccc = df_ccc[['Comm ID', 'Communication Type', 'Company PIC Name:', 
@@ -97,7 +87,7 @@ def app():
         df_ccc.loc[:, 'Discipline'] = df_ccc['Discipline'].map(discipline_mapping)
         #st.write("Task-3")
         # Task -3a: Update 'Inspection Result' column  "Approved"-----> "Accepted"
-        #df_ccc.loc[df_ccc['Inspection Result'] == "Approved", 'Inspection Result'] = "Accepted"
+        # df_ccc.loc[df_ccc['Inspection Result'] == "Approved", 'Inspection Result'] = "Accepted"
         df_ccc.loc[df_ccc['Inspection Result'].str.contains("Approved"), 'Inspection Result'] = "Accepted"
         
         # Task -3b: Fill value in 'df[workflow - Accepted BY]' column  based condition
@@ -140,7 +130,6 @@ def app():
         df_ccc['Workflow - Closed By'] = np.where(condition, df_ccc['Workflow - Accepted By'], df_ccc['Workflow - Closed By']) 
 
         condition = ((df_ccc['Company Intervention Type:'].isin(['S','R'])))
-        print(condition.sum())
         df_ccc['Company PIC Name:'] = np.where(condition, 'NA', df_ccc['Company PIC Name:'])
         df_ccc['Company PIC Name:'].isnull().sum()
         #st.write("Task-7")
@@ -153,6 +142,27 @@ def app():
         # Columns to Rename
         columns_to_preprocess = ['Workflow - Verified By', 'Workflow - Accepted By', 'Workflow - Closed By']
         df_ccc[columns_to_preprocess] = df_ccc[columns_to_preprocess].apply(preprocess_column, mapping=mapping_dict)
+        # Create an empty DataFrame to store the results
+        result_df = pd.DataFrame()
+
+        # Iterate over each column
+        for column in columns_to_preprocess:
+            # Get the 'Comm ID' values where the column is null
+            comm_ids = df_ccc.loc[df_ccc[column].isnull(), 'Comm ID']
+            
+            # Create a DataFrame from the 'Comm ID' values
+            comm_ids_df = pd.DataFrame(comm_ids)
+            
+            # Add the DataFrame to the result DataFrame
+            result_df = pd.concat([result_df, comm_ids_df], axis=1)
+
+        # Set the column names of the result DataFrame
+        result_df.columns = columns_to_preprocess
+
+        # Display the result DataFrame as a table
+        st.write("**After the Name mapping any missing values : IDs**")
+        st.table(result_df)
+
         #st.write("Task-9")
         # Task -9: Related to Priority Name
         options = [
@@ -205,9 +215,6 @@ def app():
         bin_str = base64.b64encode(data).decode()
         href = f'<a href="data:application/octet-stream;base64,{bin_str}" download="{file_name}">Download</a>'
         return href
-
-    # if __name__ == "__main__":
-
 
     st.write("**Programme Started .......**")
     # Boolean flag to control download option visibility
@@ -263,10 +270,6 @@ def app():
                 # st.markdown(get_binary_file_downloader_html(output_file_path, file_name='processed_data.xlsx'), unsafe_allow_html=True)
                 # Add a button to trigger report generation
                 if st.button("Generate report"):
-                    # if show_download:
-                    #     # Provide a download button for the user to download the Excel file
-                    #     st.markdown(get_binary_file_downloader_html(output_file_path, file_name='processed_data.xlsx'), unsafe_allow_html=True)
-                    #     st.write("***Programme Ended .......***")
                     # Extract unique Comm IDs from each DataFrame
                     processed_df_ids = set(processed_df['Comm ID'].unique())
                     df_SCDB_ids = set(df_SCDB['Comm ID'].unique())
@@ -281,15 +284,22 @@ def app():
                     # Missing Value Report
                     result = processed_df[['Workflow - Verified By', 'Workflow - Accepted Date', 
                                 'Workflow - Accepted By', 'Workflow - Closed Date', 
-                                'Workflow - Closed By','Priority (Name)','Field012 (Custom)']].isnull().sum()
+                                'Workflow - Closed By','Priority (Name)']].isnull().sum()
 
                     st.write("***Null Value Counts for Each Column:***")
                     st.write(result)
+                    missing_count = processed_df[(processed_df['Priority (Name)'] != 'Cancelled') & processed_df['Field012 (Custom)'].isnull()].shape[0]
+                    st.write("Count of missing values in 'Field012 (Custom)' where 'Priority (Name)' is not 'Cancelled':", missing_count)
+                    if missing_count != 0:
+                        st.write("Unique IDs when there are no missing values in 'Field012 (Custom)' and 'Priority (Name)' is not 'Cancelled':")
+                        st.write(processed_df[processed_df['Priority (Name)'] != 'Cancelled']['Comm ID'].unique())
+                    else:
+                        st.write("No Such Comm ID when 'Field012 (Custom)' have some missing while 'Priority (Name)' is not 'Cancelled")
                     # Missing Value Report per column with commID.
 
                     columns_to_check = ['Workflow - Verified By', 'Workflow - Accepted Date', 
                     'Workflow - Accepted By', 'Workflow - Closed Date', 
-                    'Workflow - Closed By','Priority (Name)','Field012 (Custom)']
+                    'Workflow - Closed By','Priority (Name)']
 
                     # Create an empty DataFrame to store the results
                     result_df = pd.DataFrame()
@@ -310,22 +320,13 @@ def app():
 
                     # Display the result DataFrame as a table
                     st.table(result_df)
+                    
                     result = processed_df['Priority (Name)'].str.contains(".*Approved.*") & ~processed_df['Priority (Name)'].eq("Approved")
                     # Display the 'Comm ID' of the selected rows if any are selected
                     if result.any():
-                        st.markdown("Comm ID of rows for which **Approved** Comming As Substring:")
+                        st.write("Comm ID of rows for which Approved Comming As Substring:")
                         st.write(processed_df.loc[result, 'Comm ID'])
-                    missing_count = processed_df[processed_df['Priority (Name)'] != 'Cancelled']['Field012 (Custom)'].isnull().sum()
-                    st.write("Count of missing values in 'Field012 (Custom)' where 'Priority (Name)' is not 'Cancelled':", missing_count)
                     if show_download:
                         # Provide a download button for the user to download the Excel file
                         st.markdown(get_binary_file_downloader_html(output_file_path, file_name='processed_data.xlsx'), unsafe_allow_html=True)
-                        st.write("***Programme Ended .......***")
-                
-    
-
-
-
-
-
-
+                        st.write("***Programme Ended .......***")               

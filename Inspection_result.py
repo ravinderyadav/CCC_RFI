@@ -9,7 +9,6 @@ from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
 import gc 
 import time
-from urllib.request import urlopen
 def app():
 
 
@@ -208,61 +207,62 @@ def app():
         href = f'<a href="data:application/octet-stream;base64,{bin_str}" download="{file_name}">Download</a>'
         return href
 
-    st.write("**Programme Started .......**")
-    # Boolean flag to control download option visibility
-    show_download = False
     
-    # Check if files are uploaded
-    if uploaded_file_ccc is None or uploaded_file_name is None:
-        st.write("Please upload CCC System File and Name Mapping File.")
-    else:
-        processed_df = preprocess_df_ccc(uploaded_file_ccc, uploaded_file_name)
-        
-        # Read the SCDB XLSX file as a DataFrame
-        if uploaded_file_scdb is not None:
-            df_SCDB = pd.read_excel(uploaded_file_scdb)
+    if st.button('Execute'):
+        # Boolean flag to control download option visibility
+        show_download = False
+        st.write("**Programme Started .......**")
+        # Check if files are uploaded
+        if uploaded_file_ccc is None or uploaded_file_name is None:
+            st.write("Please upload CCC System File and Name Mapping File.")
+        else:
+            processed_df = preprocess_df_ccc(uploaded_file_ccc, uploaded_file_name)
             
-            if processed_df is not None and df_SCDB is not None:
-                # Save the DataFrame to an Excel file
-                output_file_path = 'processed_data.xlsx'
-                processed_df.to_excel(output_file_path, index=False)
+            # Read the SCDB XLSX file as a DataFrame
+            if uploaded_file_scdb is not None:
+                df_SCDB = pd.read_excel(uploaded_file_scdb)
+                
+                if processed_df is not None and df_SCDB is not None:
+                    # Save the DataFrame to an Excel file
+                    output_file_path = 'processed_data.xlsx'
+                    processed_df.to_excel(output_file_path, index=False)
 
-                # Load the workbook
-                workbook = load_workbook(output_file_path)
-                sheet = workbook.active
+                    # Load the workbook
+                    workbook = load_workbook(output_file_path)
+                    sheet = workbook.active
 
-                columns_to_preprocess = ['Workflow - Verified By', 'Workflow - Accepted By', 'Workflow - Closed By']
+                    columns_to_preprocess = ['Workflow - Verified By', 'Workflow - Accepted By', 'Workflow - Closed By']
 
-                # Iterate over each column name
-                for column_name in columns_to_preprocess:
-                    # Get the column index from the column name
-                    column_index = None
-                    for col in sheet.iter_cols(min_row=1, max_row=1):
-                        for cell in col:
-                            if cell.value == column_name:
-                                column_index = cell.column
+                    # Iterate over each column name
+                    for column_name in columns_to_preprocess:
+                        # Get the column index from the column name
+                        column_index = None
+                        for col in sheet.iter_cols(min_row=1, max_row=1):
+                            for cell in col:
+                                if cell.value == column_name:
+                                    column_index = cell.column
+                                    break
+                            if column_index:
                                 break
+
                         if column_index:
-                            break
+                            for row in sheet.iter_rows(min_row=2, min_col=column_index, max_row=sheet.max_row, max_col=column_index):
+                                for cell in row:
+                                    if cell.value == "No Name Match":
+                                        cell.fill = PatternFill(start_color="FF0000", end_color="FF0000", fill_type="solid")
+                        else:
+                            print(f"Column '{column_name}' not found in the worksheet.")
 
-                    if column_index:
-                        for row in sheet.iter_rows(min_row=2, min_col=column_index, max_row=sheet.max_row, max_col=column_index):
-                            for cell in row:
-                                if cell.value == "No Name Match":
-                                    cell.fill = PatternFill(start_color="FF0000", end_color="FF0000", fill_type="solid")
-                    else:
-                        print(f"Column '{column_name}' not found in the worksheet.")
+                    # Save the workbook
+                    workbook.save(output_file_path)
+                    workbook = None
+                    gc.collect()
+                    show_download = True
+                    # Provide a download button for the user to download the Excel file
+                    # st.markdown(get_binary_file_downloader_html(output_file_path, file_name='processed_data.xlsx'), unsafe_allow_html=True)
+                    # Add a button to trigger report generation
+                    # Display nested button
 
-                # Save the workbook
-                workbook.save(output_file_path)
-                workbook = None
-                gc.collect()
-                show_download = True
-                # Provide a download button for the user to download the Excel file
-                # st.markdown(get_binary_file_downloader_html(output_file_path, file_name='processed_data.xlsx'), unsafe_allow_html=True)
-                # Add a button to trigger report generation
-                if st.button("Generate report"):
-                    # Extract unique Comm IDs from each DataFrame
                     processed_df_ids = set(processed_df['Comm ID'].unique())
                     df_SCDB_ids = set(df_SCDB['Comm ID'].unique())
                     # Find the mismatched IDs (IDs present in processed_df_ids but not in df_SCDB_ids)
@@ -321,4 +321,4 @@ def app():
                     if show_download:
                         # Provide a download button for the user to download the Excel file
                         st.markdown(get_binary_file_downloader_html(output_file_path, file_name='processed_data.xlsx'), unsafe_allow_html=True)
-                        st.write("***Programme Ended .......***")               
+                        st.write("***Programme Ended .......***")           

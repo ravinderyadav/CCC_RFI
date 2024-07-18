@@ -5,6 +5,7 @@ import warnings
 warnings.filterwarnings('ignore')
 import base64
 from PIL import Image
+from urllib.request import urlopen
 from openpyxl import load_workbook
 from openpyxl.styles import PatternFill
 import gc
@@ -12,24 +13,18 @@ import time
 def app():
 
 
-    # List of image paths (replace with your own image paths)
-    image_paths = [
-        r"D:\Streamlit\img-4.png"
-    ]
-
+    # GitHub raw URL of the image
+    github_raw_url = "https://raw.githubusercontent.com/dpsharma15/CCC_RFI/main/img-4.png"
+    
+    # Fetch the image from the URL
+    response = urlopen(github_raw_url)
+    image = Image.open(response)
+    
     # Create a placeholder for the image
     image_placeholder = st.empty()
-
-    # Display each image in the list for 5 seconds
-    for image_path in image_paths:
-        # Load the image
-        image = Image.open(image_path)
-        
-        # Display the image in the placeholder
-        image_placeholder.image(image, use_column_width=True)
-        
-        # Wait for 5 seconds before displaying the next image
-        time.sleep(0)
+    
+    # Display the fetched image
+    image_placeholder.image(image, use_column_width=True)
 
     st.markdown("<h1 style='text-align: center; color: blue;'>RFI Inspection Result</h1>", unsafe_allow_html=True)
     st.header('Upload your dataset')

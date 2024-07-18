@@ -1,8 +1,10 @@
 import streamlit as st
-from streamlit_option_menu import option_menu
-import Registration, Inspection_result
 
-# st.set_page_config(page_title="RFI_CCC")
+# Ensure this is the first Streamlit command
+st.set_page_config(page_title="RFI_CCC")
+
+import Registration
+import Inspection_result
 
 class MultiApp:
     def __init__(self):
@@ -15,25 +17,19 @@ class MultiApp:
         })
 
     def run(self):
-        app = None
-        with st.sidebar:
-            st.markdown("<h1 style='color: orange; font-weight: bold;'>CCC_RFI</h1>", unsafe_allow_html=True)
-            app = option_menu(
-                menu_title="",
-                options=["Registration", "Inspection_result"],
-                icons=["house-fill", "person-circle"],
-                menu_icon="chat-text-fill",
-                default_index=1,
-                styles={
-                    "container": {"padding": "5!important", "background-color": 'black'},
-                    "icon": {"color": "white", "font-size": "23px"},
-                    "nav-link": {"color": "white", "font-size": "15px", "text-align": "left", "margin": "0px", "--hover-color": "blue"},
-                    "nav-link-selected": {"background-color": "#02ab21"},
-                }
+        st.sidebar.markdown("<h1 style='color: orange; font-weight: bold;'>CCC_RFI</h1>", unsafe_allow_html=True)
+        app_titles = ["Select a page"] + [app_dict["title"] for app_dict in self.apps]
+        app_choice = st.sidebar.selectbox("Select a page:", app_titles)
+
+        if app_choice == "Select a page":
+            st.markdown(
+                "<div style='display: flex; justify-content: center; align-items: center; height: 80vh;'><h2 style='color: red;'>Please select a program from the dropdown list.</h2></div>",
+                unsafe_allow_html=True,
             )
-        for app_dict in self.apps:
-            if app == app_dict["title"]:
-                app_dict["function"]()
+        else:
+            for app_dict in self.apps:
+                if app_choice == app_dict["title"]:
+                    app_dict["function"]()
 
 # Create an instance of MultiApp
 multi_app = MultiApp()

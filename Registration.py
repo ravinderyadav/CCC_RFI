@@ -1,30 +1,37 @@
 import streamlit as st
 from PIL import Image
 import base64
-from io import BytesIO
-import random
 import pandas as pd
 import os
 from datetime import datetime
 import base64
 from openpyxl import load_workbook
-from urllib.request import urlopen
 from openpyxl.styles import PatternFill
 import warnings
-import io
 import time
 warnings.filterwarnings('ignore')
 
 def app():
-    # GitHub raw URL of the image
-    github_raw_url = "https://raw.githubusercontent.com/dpsharma15/CCC_RFI/main/img-4.png"
-    
-    # Fetch the image from the URL
-    response = urlopen(github_raw_url)
-    image = Image.open(response)
-    
-    # Display the image
-    st.image(image, use_column_width=True)
+    # List of image paths (replace with your own image paths)
+    image_paths = [
+        r"D:\Streamlit\img-4.png"
+    ]
+
+    # Create a placeholder for the image
+    image_placeholder = st.empty()
+
+    # Display each image in the list for 5 seconds
+    for image_path in image_paths:
+        # Load the image
+        image = Image.open(image_path)
+        
+        # Display the image in the placeholder
+        image_placeholder.image(image, use_column_width=True)
+        
+        # Wait for 5 seconds before displaying the next image
+        time.sleep(0)
+
+
 
     def extract_date_from_filename(filename):
         # Extract the date portion from the file name
@@ -69,17 +76,17 @@ def app():
             'PA': 'PNT', 'PIP': 'PIP', 'STR': 'STR', 'TC': 'TEL', 'HV': 'MEC', 'RF': 'REF'
         }
         lead_mapping = {
-            'BLD': 'Paglinawan, Cipriano/Chakravarty, Santanu/Kanikodan, Prakashan',
-            'CVL': 'Paglinawan, Cipriano/Chakravarty, Santanu/Kanikodan, Prakashan',
-            'ELE': 'Paglinawan, Cipriano/Chakravarty, Santanu/Khurshid, Karawan',
-            'CSE': 'Paglinawan, Cipriano/Chakravarty, Santanu/Khurshid, Karawan',
-            'TEL': 'Paglinawan, Cipriano/Chakravarty, Santanu/Khurshid, Karawan',
-            'PNT': 'Paglinawan, Cipriano/Chakravarty, Santanu/Anjum, Mohammad Muzamil',
-            'REF': 'Paglinawan, Cipriano/Chakravarty, Santanu/Anjum, Mohammad Muzamil',
-            'INS': 'Paglinawan, Cipriano/Chakravarty, Santanu/Anjum, Mohammad Muzamil',
-            'PIP': 'Paglinawan, Cipriano/Chakravarty, Santanu/Ali, Ahsan',
-            'STR': 'Paglinawan, Cipriano/Chakravarty, Santanu/Agbay, Cecilio Masagpag',
-            'MEC': 'Paglinawan, Cipriano/Chakravarty, Santanu/Brosoto, Joelito'
+            'BLD': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Kanikodan, Prakashan',
+            'CVL': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Kanikodan, Prakashan',
+            'ELE': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Khurshid, Karawan',
+            'CSE': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Khurshid, Karawan',
+            'TEL': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Khurshid, Karawan',
+            'PNT': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Anjum, Mohammad Muzamil',
+            'REF': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Anjum, Mohammad Muzamil',
+            'INS': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Anjum, Mohammad Muzamil',
+            'PIP': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Ali, Ahsan',
+            'STR': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Agbay, Cecilio Masagpag',
+            'MEC': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Brosoto, Joelito'
         }
         
         df['Discipline'] = df['Discipline'].map(discipline_mapping)

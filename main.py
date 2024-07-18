@@ -2,7 +2,7 @@ import streamlit as st
 from streamlit_option_menu import option_menu
 import Registration, Inspection_result
 
-st.set_page_config(page_title="RFI_CCC")
+# st.set_page_config(page_title="RFI_CCC")
 
 class MultiApp:
     def __init__(self):

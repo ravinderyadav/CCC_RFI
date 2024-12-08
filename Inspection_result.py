@@ -157,6 +157,7 @@ def app():
 
         # Display the result DataFrame as a table
         st.write("**After the Name mapping any missing values : IDs**")
+        result_df.drop_duplicates(inplace=True)
         st.table(result_df)
 
         #st.write("Task-9")
@@ -231,6 +232,7 @@ def app():
                     # Save the DataFrame to an Excel file
                     output_file_path = 'processed_data.xlsx'
                     filtered_comm_ids = processed_df[processed_df['Workflow - Verified By'] == 'No Name Match']['Comm ID']
+                    filtered_comm_ids.drop_duplicates(inplace=True)
                     st.write("Here are the Comm IDs with 'No Name Match':", len(filtered_comm_ids))  # Fixed parenthesis
                     st.write(filtered_comm_ids)
                     processed_df.to_excel(output_file_path, index=False)

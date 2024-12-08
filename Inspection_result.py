@@ -231,9 +231,14 @@ def app():
                 if processed_df is not None and df_SCDB is not None:
                     # Save the DataFrame to an Excel file
                     output_file_path = 'processed_data.xlsx'
-                    filtered_comm_ids = processed_df[processed_df['Workflow - Verified By'] == 'No Name Match']['Comm ID']
-                    filtered_comm_ids.drop_duplicates(inplace=True)
-                    st.write("Here are the Comm IDs with 'No Name Match':", len(filtered_comm_ids))  # Fixed parenthesis
+                    filtered_comm_ids = processed_df[
+                    (processed_df['Workflow - Verified By'] == 'No Name Match') |
+                    (processed_df['Workflow - Accepted By'] == 'No Name Match') |
+                    (processed_df['Workflow - Closed By'] == 'No Name Match')]['Comm ID']
+                    # Remove duplicate Comm IDs
+                    filtered_comm_ids = filtered_comm_ids.drop_duplicates()
+                    # Display the number of unique Comm IDs
+                    st.write("Here are the Comm IDs with 'No Name Match':", len(filtered_comm_ids))
                     st.write(filtered_comm_ids)
                     processed_df.to_excel(output_file_path, index=False)
 

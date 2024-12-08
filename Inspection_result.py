@@ -77,7 +77,7 @@ def app():
         discipline_mapping = {
             'AB': 'BLD', 'CVL': 'CVL', 'ELE': 'ELE', 'IN': 'CSE', 'IS': 'INS',
             'MEC': 'MEC', 'PA': 'PNT', 'PIP': 'PIP', 'STR': 'STR', 'TC': 'TEL',
-            'HV': 'MEC', 'RF': 'REF'
+            'HV': 'MEC', 'RF': 'REF','FP':'FPE'
         }
         df_ccc.loc[:, 'Discipline'] = df_ccc['Discipline'].map(discipline_mapping)
         #st.write("Task-3")
@@ -96,6 +96,7 @@ def app():
             'PNT': 'Anjum, Mohammad Muzamil',
             'REF': 'Anjum, Mohammad Muzamil',
             'INS': 'Anjum, Mohammad Muzamil',
+            'FPE': 'Anjum, Mohammad Muzamil',
             'PIP': 'Ali, Ahsan',
             'STR': 'Agbay, Cecilio Masagpag',
             'MEC': 'Brosoto, Joelito'
@@ -137,6 +138,10 @@ def app():
         # Columns to Rename
         columns_to_preprocess = ['Workflow - Verified By', 'Workflow - Accepted By', 'Workflow - Closed By']
         df_ccc[columns_to_preprocess] = df_ccc[columns_to_preprocess].apply(preprocess_column, mapping=mapping_dict)
+        filtered_comm_ids = df_ccc[df_ccc['Workflow - Verified By'] == 'No Name Match']['Comm ID']
+        st.write("Here are the Comm IDs with 'No Name Match':", len(filtered_comm_ids))  # Fixed parenthesis
+        st.write(filtered_comm_ids)
+
         # Create an empty DataFrame to store the results
         result_df = pd.DataFrame()
 

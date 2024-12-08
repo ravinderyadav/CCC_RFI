@@ -138,10 +138,6 @@ def app():
         # Columns to Rename
         columns_to_preprocess = ['Workflow - Verified By', 'Workflow - Accepted By', 'Workflow - Closed By']
         df_ccc[columns_to_preprocess] = df_ccc[columns_to_preprocess].apply(preprocess_column, mapping=mapping_dict)
-        filtered_comm_ids = df_ccc[df_ccc['Workflow - Verified By'] == 'No Name Match']['Comm ID']
-        st.write("Here are the Comm IDs with 'No Name Match':", len(filtered_comm_ids))  # Fixed parenthesis
-        st.write(filtered_comm_ids)
-
         # Create an empty DataFrame to store the results
         result_df = pd.DataFrame()
 
@@ -234,6 +230,9 @@ def app():
                 if processed_df is not None and df_SCDB is not None:
                     # Save the DataFrame to an Excel file
                     output_file_path = 'processed_data.xlsx'
+                    filtered_comm_ids = processed_df[processed_df['Workflow - Verified By'] == 'No Name Match']['Comm ID']
+                    st.write("Here are the Comm IDs with 'No Name Match':", len(filtered_comm_ids))  # Fixed parenthesis
+                    st.write(filtered_comm_ids)
                     processed_df.to_excel(output_file_path, index=False)
 
                     # Load the workbook

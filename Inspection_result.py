@@ -30,13 +30,13 @@ def app():
     st.header('Upload your dataset')
 
     # Use st.file_uploader with Markdown formatting for the label
-    uploaded_file_ccc = st.file_uploader("**_Upload CCC System File_**", type=["xlsx"])
+    uploaded_file_ccc = st.file_uploader("**_Upload CCC System File_**", type=["xlsx"],key="ccc_file")
 
     # Upload SCDB System File with formatted label
-    uploaded_file_scdb = st.file_uploader("**_Upload SCDB System File_**", type=["xlsx"])
+    uploaded_file_scdb = st.file_uploader("**_Upload SCDB System File_**", type=["xlsx"],key="scdb_file")
 
     # Upload Name Mapping File with formatted label
-    uploaded_file_name = st.file_uploader("**_Upload Name Mapping File_**", type=["xlsx"])
+    uploaded_file_name = st.file_uploader("**_Upload Name Mapping File_**", type=["xlsx"],key="Mapping_file")
 
     def preprocess_column(column, **kwargs):
         """Preprocess a column using a mapping dictionary for replacements"""

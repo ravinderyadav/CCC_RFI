@@ -247,9 +247,8 @@ def app():
 
         if program_choice == "SCDB Data":
             st.subheader("Upload the CCC System File and Name Mapping File")
-            uploaded_data_file = st.file_uploader("CCC System File", type=["xlsx"])
-            uploaded_mapping_file = st.file_uploader("Name Mapping File", type=["xlsx"])
-
+            uploaded_data_file = st.file_uploader("CCC System File", type=["xlsx"], key="ccc_system_file")
+            uploaded_mapping_file = st.file_uploader("Name Mapping File", type=["xlsx"], key="name_mapping_file")
             if st.button("Process Data for SCDB Data") and uploaded_data_file is not None and uploaded_mapping_file is not None:
                 df_step1, df_step2 = process_excel_file_1(uploaded_data_file, uploaded_mapping_file)
                 st.write("### File Processing Complete for SCDB Data!")
@@ -263,10 +262,10 @@ def app():
 
         elif program_choice == "Report":
             st.subheader("Upload CCC File")
-            uploaded_file_CCC = st.file_uploader("CCC Upload", type=["xlsx", "xls"])
+            uploaded_file_CCC = st.file_uploader("CCC Upload", type=["xlsx", "xls"], key="ccc_upload")
 
             st.subheader("Upload SCDB")
-            uploaded_file_SCDB = st.file_uploader("SCDB Upload", type=["xlsx", "xls"])
+            uploaded_file_SCDB = st.file_uploader("SCDB Upload", type=["xlsx", "xls"], key="scdb_upload")
 
             if st.button("Process Files for Report") and uploaded_file_CCC is not None and uploaded_file_SCDB is not None:
                 process_file_2(uploaded_file_CCC, uploaded_file_SCDB)  # Pass both uploaded files to the function

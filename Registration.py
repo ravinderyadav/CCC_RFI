@@ -90,7 +90,7 @@ def app():
         # Date format as per the requirement
         df[['EXPECTED END DATE', 'Due Date']] = df[['EXPECTED END DATE', 'Due Date']].apply(pd.to_datetime, errors='coerce')
         df['Date Difference'] = (df['EXPECTED END DATE'] - df['Due Date']).dt.days
-        df[['EXPECTED END DATE', 'Due Date']] = df[['EXPECTED END DATE', 'Due Date']].apply(lambda x: x.dt.strftime('%d-%b-%y'))
+        df[['EXPECTED END DATE', 'Due Date']] = df[['EXPECTED END DATE', 'Due Date']].apply(lambda x: x.dt.strftime('%m/%d/%Y'))
         
         trigger_disciplines = ['MEC', 'PNT', 'PIP', 'STR', 'REF', 'INS']
         
@@ -110,7 +110,7 @@ def app():
         step2['Workflow - Originated By'] = 'EL RAYES, Mohammad'
         step2['Workflow - Requested Date'] = formatted_creation_date
         step2['Workflow - Requested By'] = preprocess_column(df['Field008 (Custom)'], mapping_dict)
-        step2['Workflow - Issued Date'] = datetime.now().strftime('%d-%b-%y')
+        step2['Workflow - Issued Date'] = datetime.now().strftime('%m/%d/%Y')
         step2['Workflow - Issued By'] = 'Kunnummal, Sameer'
         
         step2.drop_duplicates(subset=['Comm ID'], keep='first', inplace=True)

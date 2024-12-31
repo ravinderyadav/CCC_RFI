@@ -273,6 +273,10 @@ def app():
 
     def get_binary_file_downloader_html(df, file_name='file.csv'):
         """ Generates a link allowing the data in a given pandas dataframe to be downloaded """
+        if 'Field002 (Custom)' in df.columns:
+            df['Field002 (Custom)'] = df['Field002 (Custom)'].astype(str)
+        if 'Field003 (Custom)' in df.columns:
+            df['Field003 (Custom)'] = df['Field003 (Custom)'].astype(str)
         csv = df.to_csv(index=False)
         b64 = base64.b64encode(csv.encode()).decode()
         href = f'<a href="data:file/csv;base64,{b64}" download="{file_name}">Download CSV File</a>'

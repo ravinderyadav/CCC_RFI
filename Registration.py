@@ -30,7 +30,7 @@ def app():
     def extract_date_from_filename(filename):
         # Extract the date portion from the file name
         date_str = filename.split('_')[-1].split('.')[0]  # Split by underscores and remove file extension
-        return pd.to_datetime(date_str, format='%d-%m-%Y').strftime('%d-%b-%y')
+        return pd.to_datetime(date_str, format='%d-%m-%Y').strftime('%m/%d/%Y')
 
 
     def preprocess_column(column, mapping_dict):

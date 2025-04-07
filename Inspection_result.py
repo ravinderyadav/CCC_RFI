@@ -90,14 +90,14 @@ def app():
         Discipline_mapping = {
             'BLD': 'Kanikodan, Prakashan',
             'CVL': 'Kanikodan, Prakashan',
-            'ELE': 'Khurshid, Karawan',
-            'CSE': 'Khurshid, Karawan',
-            'TEL': 'Khurshid, Karawan',
+            'ELE': 'Musico, Michael',
+            'CSE': 'Musico, Michael',
+            'TEL': 'Musico, Michael',
             'PNT': 'Anjum, Mohammad Muzamil',
             'REF': 'Anjum, Mohammad Muzamil',
             'INS': 'Anjum, Mohammad Muzamil',
             'FPE': 'Anjum, Mohammad Muzamil',
-            'PIP': 'Ali, Ahsan',
+            'PIP': 'Kappummal, Surendran',
             'STR': 'Agbay, Cecilio Masagpag',
             'MEC': 'Brosoto, Joelito'
         }

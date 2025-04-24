@@ -88,8 +88,8 @@ def app():
         # Task -3b: Fill value in 'df[workflow - Accepted BY]' column  based condition
         condition = (df_ccc['Inspection Result'] == 'Cancelled') & (df_ccc['Workflow - Accepted By'].isnull())
         Discipline_mapping = {
-            'BLD': 'Kanikodan, Prakashan',
-            'CVL': 'Kanikodan, Prakashan',
+            'BLD': 'Lopez, Richelle',
+            'CVL': 'Lopez, Richelle',
             'ELE': 'Musico, Michael',
             'CSE': 'Musico, Michael',
             'TEL': 'Musico, Michael',
@@ -97,7 +97,7 @@ def app():
             'REF': 'Anjum, Mohammad Muzamil',
             'INS': 'Anjum, Mohammad Muzamil',
             'FPE': 'Anjum, Mohammad Muzamil',
-            'PIP': 'Kappummal, Surendran',
+            'PIP': 'Tabo, Pio Jr.',
             'STR': 'Agbay, Cecilio Masagpag',
             'MEC': 'Brosoto, Joelito'
         }

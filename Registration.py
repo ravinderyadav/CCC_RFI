@@ -70,8 +70,8 @@ def app():
             'PA': 'PNT', 'PIP': 'PIP', 'STR': 'STR', 'TC': 'TEL', 'HV': 'MEC', 'RF': 'REF','FP':'FPE'
         }
         lead_mapping = {
-            'BLD': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Kanikodan, Prakashan',
-            'CVL': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Kanikodan, Prakashan',
+            'BLD': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Lopez, Richelle',
+            'CVL': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Lopez, Richelle',
             'ELE': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Musico, Michael',
             'CSE': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Musico, Michael',
             'TEL': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Musico, Michael',
@@ -79,7 +79,7 @@ def app():
             'REF': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Anjum, Mohammad Muzamil',
             'INS': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Anjum, Mohammad Muzamil',
             'FPE': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Anjum, Mohammad Muzamil',
-            'PIP': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Kappummal, Surendran',
+            'PIP': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Tabo, Pio Jr.',
             'STR': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Agbay, Cecilio Masagpag',
             'MEC': 'Paglinawan, Cipriano/Gasang, Carla Joyzenia/Brosoto, Joelito'
         }
